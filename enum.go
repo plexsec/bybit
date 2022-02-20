@@ -339,3 +339,20 @@ func MinimumVolumeUSDT(symbol SymbolUSDT) float64 {
 		panic("nothing")
 	}
 }
+
+// Account type (from_account_type/to_account_type)
+type AccountType string
+
+const (
+	AccountTypeContract   = AccountType("CONTRACT")
+	AccountTypeSpot       = AccountType("SPOT")
+	AccountTypeINVESTMENT = AccountType("INVESTMENT")
+)
+
+// Transfer type (type)
+type TransferType string
+
+const (
+	TransferTypeIn  = TransferType("IN")
+	TransferTypeOut = TransferType("OUT")
+)

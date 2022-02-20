@@ -418,3 +418,43 @@ func (s *AccountService) SpotOrderBatchCancelByIDs(orderIDs []string) (*SpotOrde
 	}
 	return &res, nil
 }
+
+type SpotAccountBalanceResponse struct {
+	CommonResponse `json:",inline"`
+	Result         SpotAccountBalanceResult `json:"result"`
+}
+
+type SpotAccountBalanceResult struct {
+	Balances []SpotAccountBalance `json:"balances"`
+}
+
+type SpotAccountBalance struct {
+	Coin     string `json:"coin"`
+	CoinId   string `json:"coinId"`
+	CoinName string `json:"coinName"`
+	Total    string `json:"total"`
+	Free     string `json:"free"`
+	Locked   string `json:"locked"`
+}
+
+func (s *AccountService) SpotAccountBalance() (*SpotAccountBalanceResponse, error) {
+	var res SpotAccountBalanceResponse
+
+	url, err := s.Client.BuildPrivateURL("/spot/v1/account", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+
+}
